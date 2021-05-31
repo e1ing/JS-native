@@ -12,7 +12,7 @@ type CurrencyExchangePropsType = {
     changeCurrentCurrency: (e: React.MouseEvent<HTMLLIElement>) => void;
 };
 
-const CurrencyExchange: React.FC<CurrencyExchangePropsType> = ({
+export const CurrencyExchange: React.FC<CurrencyExchangePropsType> = ({
                                                                                   currenciesName,
                                                                                   currentCurrency,
                                                                                   currencyRate,
