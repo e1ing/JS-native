@@ -163,22 +163,41 @@ function sumTo(arg: number) {
 
     //Факториал натурального числа – это число, умноженное на "себя минус один", затем на "себя минус два", и так далее до 1. Факториал n обозначается как n!
 
-    function fu(arg: number):number {
+    function fu(arg: number): number {
         if (arg === 1) return arg;
-        return arg*fu(arg-1)
+        return arg * fu(arg - 1)
     }
+
     console.log(fu(3));
 
     //Напишите функцию fib(n) которая возвращает n-е число Фибоначчи.
 
-    function fib(arg: number):number{
+    function fib(arg: number): number {
         if (arg < 1) return arg;
         return fib(arg - 1) + fib(arg - 2);
     }
+
     console.log(fib(3));
 
 // Task 06
 // написать функцию, которая повторяет функционал метода flat массива на всю глубину.
+
+    function customFlatend(arr: <Array>) {
+        let flattend = [];
+
+        function flat(arr: <Array>) {
+            arr.forEach(el => {
+                if (Array.isArray(el)) {
+                    flat(el)
+                } else flattend.push(el);
+            });
+        } (arr)
+        return flattend;
+    }
+}
+
+console.log(customFlatened([1, 2, [3, 4]]))
+
 
 // just a plug
 export default () => {
