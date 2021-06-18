@@ -9,7 +9,14 @@ const Lesson3 = () => {
     const [serachResultByType, setSerachResultByType] = useState('');
 
     const searchFilm = () => {
-        API.searchFilmsByTitle(searchName)
+        API.searchFilmsByTitle(searchName) //тут возвращается промис, поэтому ставим then...
+            .then(response => console.log(response)
+            if (response.data.Response === "True"){
+                setSearchResult(JSON.stringify(response.data.Search))
+            } else {
+                setSerachResult((response.data.Error))
+            })
+            .catch(err => console.log(err))
     };
 
     const searchByType = (e: React.MouseEvent<HTMLButtonElement>) => {
