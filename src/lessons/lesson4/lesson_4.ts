@@ -3,9 +3,134 @@ console.log('lesson 4');
 // http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D
 // https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
 
+//Task 1
+setTimeout(()=> console.log(1),0);
+console.log(2);
+(()=> console.log(3))();
+Promise.resolve(console.log(4)); //если нет .then микротаска не создаётся, он синхронный
+//2341
+
+//Task 2 до асинх. запроса
+new Promise((res, rej) => { //выполенение конструктора промиса идет синхронно
+    console.log(1);
+})
+new Promise((res, rej) => {
+    setTimeout(()=> console.log(2), 0);
+})
+Promise.resolve(setTimeout(()=> console.log(3), 0)); //зарезолвленный промис
+console.log(4);
+Promise.reject(console.log(5));
+//14523
+
+//Task 3
+(function(){
+    setTimeout(()=> console.log(1), 100);
+})();
+console.log(2);
+let i = 0;
+while ( i < 5000000000 ) {
+    i++
+}
+new Promise((res, rej) => {
+    setTimeout(()=> console.log(3), 50);
+})
+function f() {
+    console.log(4);
+}
+Promise.resolve(console.log(5));
+// 2531
+
+//Task 4
+function f(num:number) {
+    console.log(num);
+}
+
+Promise.resolve(1)
+    .then(f);
+
+(function(){
+    console.log(2);
+})();
+
+console.log(3);
+
+new Promise((res, rej) => {
+    console.log(4);
+});
+
+setTimeout(f, 0, 5);
+// 23415
+
+//Task 5
+console.log(1);
+function f() {
+    console.log(2);
+}
+setTimeout(()=>{
+    console.log(3);
+    let p = new Promise((res, rej) => {
+        console.log(4);
+        res();
+    });
+    p.then(() => f())
+},0);
+let l = new Promise((res, rej) => {
+    console.log(5);
+    rej();
+}); e.log(res)).catch(() => console.log(6));
+console.log(7);
+//1576342
+
+//Task 7
+async function sleep(ms: number) {
+    return new Promise( res => {
+        setTimeout(() => {
+            console.log(ms);
+            res();
+        }, ms*100);
+    })
+}
+
+async function show() {
+    await sleep(0)
+    await sleep(3)
+    await sleep(2)
+    await sleep(1)
+}
+
+show();
+
+//Task 8
+let pr1 = new Promise((res) => {
+    res(10);
+});
+let pr2 = new Promise((res) => {
+    res(0)
+});
+pr1
+    .then((res: any) => {
+        console.log(res);
+        return res + 2;
+    })
+    .then((res: any) => {
+        console.log(res);
+        return res + 2;
+    })
+    .then(console.log);
+pr2
+    .then((res: any) => {
+        console.log(res);
+        return res + 1;
+    })
+    .then((res: any) => {
+        console.log(res);
+        return res + 1;
+    })
+    .then(console.log);
+
 
 // Task 01
-// Создайте промис, который постоянно находиться в состоянии pending.
+// Создайте промис, который постоянно находится в состоянии pending.
 // В конструкторе промиса выведите в консоль сообщение "Promise is created".
 
 
