@@ -8,7 +8,20 @@ const Lesson3 = () => {
     const [searchNameByType, setSearchNameByType] = useState('');
     const [serachResultByType, setSerachResultByType] = useState('');
 
+/*
     const searchFilm = () => {
+<<<<<<< HEAD
+        API.searchFilmsByTitle(searchName)
+            .then(response => {
+                console.log(response);
+               if (response.data.Response==='True'){
+                   setSearchResult(JSON.stringify(response.data.Search))
+               } else {
+                   setSearchResult(response.data.Error)
+               }
+            })
+            .catch(err=>console.log(err))
+=======
         API.searchFilmsByTitle(searchName) //тут возвращается промис, поэтому ставим then...
             .then(response => console.log(response)
             if (response.data.Response === "True"){
@@ -17,7 +30,23 @@ const Lesson3 = () => {
                 setSerachResult((response.data.Error))
             })
             .catch(err => console.log(err))
+>>>>>>> be4cb5ead099d4b10c6e4c6b2212a1236eb06d8e
     };
+*/
+
+    /*const searchFilm = async() => {
+        try{
+            const {data} =await API.searchFilmsByTitle((searchName))
+            if (Response==='True'){
+                setSearchResult(JSON.stringify(Search))
+            } else {
+                setSearchResult(response.data.Error)
+            }
+const response = await API.searchFilmsByTitle(searchName)
+        } catch (err) {
+
+        }
+    }*/
 
     const searchByType = (e: React.MouseEvent<HTMLButtonElement>) => {
         const type: string = e.currentTarget.dataset.t ? e.currentTarget.dataset.t : '';
