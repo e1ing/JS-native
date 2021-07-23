@@ -4,10 +4,10 @@ console.log('lesson 4');
 // https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
 
 //Task 1
-setTimeout(()=> console.log(1),0);
+setTimeout(() => console.log(1), 0);
 console.log(2);
-(()=> console.log(3))();
-Promise.resolve(console.log(4)); //если нет .then микротаска не создаётся, он синхронный
+(() => console.log(3))();
+Promise.resolve(console.log(4)); //если нет .then микротаска не создаётся, он синхронный. Сначала отрабатывает функция console.log, потом 4 передаётся в promise.
 //2341
 
 //Task 2 до асинх. запроса
@@ -15,40 +15,42 @@ new Promise((res, rej) => { //выполенение конструктора п
     console.log(1);
 })
 new Promise((res, rej) => {
-    setTimeout(()=> console.log(2), 0);
+    setTimeout(() => console.log(2), 0);
 })
-Promise.resolve(setTimeout(()=> console.log(3), 0)); //зарезолвленный промис
+Promise.resolve(setTimeout(() => console.log(3), 0)); //зарезолвленный промис
 console.log(4);
 Promise.reject(console.log(5));
 //14523
 
 //Task 3
-(function(){
-    setTimeout(()=> console.log(1), 100);
-})();
+(function () {
+    setTimeout(() => console.log(1), 100);
+})();                                               //самовызывающаяся функция
 console.log(2);
 let i = 0;
-while ( i < 5000000000 ) {
+while (i < 5000000000) {
     i++
 }
 new Promise((res, rej) => {
-    setTimeout(()=> console.log(3), 50);
+    setTimeout(() => console.log(3), 50);
 })
+
 function f() {
     console.log(4);
 }
+
 Promise.resolve(console.log(5));
 // 2531
 
 //Task 4
-function f(num:number) {
+function f(num: number) {
     console.log(num);
 }
 
 Promise.resolve(1)
     .then(f);
 
-(function(){
+(function () {
     console.log(2);
 })();
 
@@ -63,42 +65,27 @@ setTimeout(f, 0, 5);
 
 //Task 5
 console.log(1);
+
 function f() {
     console.log(2);
 }
-setTimeout(()=>{
+
+setTimeout(() => {
     console.log(3);
     let p = new Promise((res, rej) => {
         console.log(4);
         res();
     });
     p.then(() => f())
-},0);
+}, 0);
 let l = new Promise((res, rej) => {
     console.log(5);
     rej();
-}); e.log(res)).catch(() => console.log(6));
+});
+l.then(res => console.log(res)).catch(() => console.log(6));
 console.log(7);
 //1576342
 
-//Task 7
-async function sleep(ms: number) {
-    return new Promise( res => {
-        setTimeout(() => {
-            console.log(ms);
-            res();
-        }, ms*100);
-    })
-}
-
-async function show() {
-    await sleep(0)
-    await sleep(3)
-    await sleep(2)
-    await sleep(1)
-}
-
-show();
 
 //Task 8
 let pr1 = new Promise((res) => {
@@ -166,6 +153,48 @@ pr2
 // свойства resolve и reject получают ссылки на соответствующие функции
 // resolve и reject. Следующие два обработчика запускают методы resolve и reject.
 
+type TestObjType = {
+    promise: null | Promise<any>;
+    resolve: null | Function;
+    reject: null | Function;
+    onSuccess: (paramName: string) => void;
+    onError: (paramName: string) => void;
+}
+
+const handlePromise: TestObjType = {
+    promise: null,
+    resolve: null,
+    reject: null,
+    onSuccess: (paramName: string) => {
+        console.log(`Promise is resolved with data: ${paramName}`)
+    },
+    onError: (paramName: string) => {
+        console.log(`Promise is rejected with error: ${paramName}`)
+    },
+}
+
+export const createPromise = () => {
+    const somePromise: Promise<any> = new Promise((res, rej) => {
+        handlePromise.resolve = res;
+        handlePromise.reject = rej;
+    });
+    handlePromise.promise = somePromise;
+    handlePromise.promise
+        .then(res => handlePromise.onSuccess(res)) //работает также как и следующая строка
+        .catch(handlePromise.onError)  //тут тоже callback, который принимает аргумент и что-то делает с ним
+    console.log(handlePromise)
+}
+
+export const resolvePromise = () => {
+    handlePromise.resolve && handlePromise.resolve('1')
+}
+
+export const rejectPromise = () => {
+    handlePromise.reject && handlePromise.reject('0')
+}
+
+//@ts-ignore
+window.prom = handlePromise;
 
 // Task 06
 // Создайте промис, который через 1 с возвращает строку "My name is".
@@ -175,13 +204,49 @@ pr2
 // Добавьте два метода then и передайте созданные функции.
 
 
-// Task 7
+// Task 07
 // Создайте три промиса. Первый промис возвращает объект { name: "Anna" } через 2с,
 // второй промис возвращает объект {age: 16} через 3 с, а третий {city: ''} через 4с.
 // Получите результаты работы промисов, объедините свойства объектов
 // и выведите в консоль {name, age, city}
 
+//Task 7 Промисификация. Надо поменять порядок выводимых цифр в show на 3,2,1
+//Начальное условие
+/*async function sleep(ms: number){
+    setTimeout(()=> {
+        console.log(ms)
+    }, ms*100);
+}
+
+async function show() {
+    await sleep(3)
+    await sleep(2)
+    await sleep(1)
+}
+show();
+*/
+
+//Решение:
+
+async function sleep(ms: number){
+   return new Promise ((res => {
+       setTimeout(() => {
+           console.log(ms)
+           res();
+       }, ms * 100);
+   })
+}
+
+async function show() {
+    await sleep(3)
+    await sleep(2)
+    await sleep(1)
+}
+show();
+
+
 
 
 // just a plug
-export default ()=>{};
+export default () => {
+};

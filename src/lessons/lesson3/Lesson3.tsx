@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import API from './API';
 import './lesson_3';
 
@@ -8,45 +8,29 @@ const Lesson3 = () => {
     const [searchNameByType, setSearchNameByType] = useState('');
     const [serachResultByType, setSerachResultByType] = useState('');
 
-/*
-    const searchFilm = () => {
-<<<<<<< HEAD
-        API.searchFilmsByTitle(searchName)
-            .then(response => {
-                console.log(response);
-               if (response.data.Response==='True'){
-                   setSearchResult(JSON.stringify(response.data.Search))
-               } else {
-                   setSearchResult(response.data.Error)
-               }
-            })
-            .catch(err=>console.log(err))
-=======
-        API.searchFilmsByTitle(searchName) //тут возвращается промис, поэтому ставим then...
-            .then(response => console.log(response)
-            if (response.data.Response === "True"){
-                setSearchResult(JSON.stringify(response.data.Search))
-            } else {
-                setSerachResult((response.data.Error))
-            })
-            .catch(err => console.log(err))
->>>>>>> be4cb5ead099d4b10c6e4c6b2212a1236eb06d8e
-    };
-*/
+    /* const searchFilm = () => {
+         API.searchFilmsByTitle(searchName)
+             .then(response => {
+                 if (response.data.Response==="True"){
+                     setSerachResult(JSON.stringify(response.data.Search))
+                 } else {
+                     setSerachResult((JSON.stringify(response.data.Error)))
+                 }
+                 console.log(response)
+             })
+             .catch(err => console.log(err))
+     };*/
 
-    /*const searchFilm = async() => {
-        try{
-            const {data} =await API.searchFilmsByTitle((searchName))
-            if (Response==='True'){
-                setSearchResult(JSON.stringify(Search))
-            } else {
-                setSearchResult(response.data.Error)
-            }
-const response = await API.searchFilmsByTitle(searchName)
+    const searchFilm = async () => {
+        try {
+            const {data} = await API.searchFilmsByTitle(searchName)
+            const {Response, Search, Error} = data;
         } catch (err) {
 
         }
-    }*/
+        API.searchFilmsByTitle(searchName)
+
+    }
 
     const searchByType = (e: React.MouseEvent<HTMLButtonElement>) => {
         const type: string = e.currentTarget.dataset.t ? e.currentTarget.dataset.t : '';
@@ -67,7 +51,8 @@ const response = await API.searchFilmsByTitle(searchName)
 
             <div>
                 <h3><p>Search by type:</p></h3>
-                <input type="text" value={searchNameByType} onChange={(e) => setSearchNameByType(e.currentTarget.value)}/>
+                <input type="text" value={searchNameByType}
+                       onChange={(e) => setSearchNameByType(e.currentTarget.value)}/>
                 <button onClick={searchByType} data-t='movie'>Movie</button>
                 <button onClick={searchByType} data-t='series'>Series</button>
                 <div>
