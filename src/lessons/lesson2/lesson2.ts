@@ -41,28 +41,23 @@ console.log(sum(3)(6))
 // counter2(); // 1
 // counter(); // 3
 
-function makeCounter() {
-    let count = 0
-    return function () {
-        return ++count;
+
+//@ts-ignore
+function makeCounter () {
+    let a = 0;
+    return function(){
+       return ++a;
     }
 }
-
+//@ts-ignore
 const counter = makeCounter();
-counter();
+//@ts-ignore
+const counter2 = makeCounter();
+console.log(counter());
+console.log(counter());
+console.log(counter2());
 console.log(counter());
 
-const counter2 = makeCounter();
-counter2();
-counter2();
-counter2();
-console.log(counter2());
-
-/*
-for () {
-    counter2(); //замыкание в цикле
-}
-*/
 
 // Task 03
 // Переписать функцию из Task 02 так, что бы она принимала число в качестве аргумента и это число было стартовым значением счетчика
@@ -72,28 +67,32 @@ for () {
 // reset: установить счетчик в 0;
 // set: установить счетчик в заданное значение;
 
-
-function makeCounter3(num: number): any {
+//@ts-ignore
+function makeCounter3(num) {
     let newNum = num;
-    return
-    let count = {
-        increase: function () {
+    //@ts-ignore
+    return  {
+        increase() {
             return ++newNum
         },
-        decrease: function () {
+        decrease() {
             return --newNum
         },
-        reset: function () {
+        reset() {
             return newNum = 0
         },
+        set(num:number) {
+            return newNum=num;
+        }
     };
 
 }
 
-
 let counter3 = makeCounter3(4);
 
-console.log(counter3.increase);
+console.log(counter3.increase());
+console.log(counter3.decrease());
+console.log(counter3.reset());
 
 
 // Task 04*
@@ -121,7 +120,6 @@ function superSum(num: number) {
             return helper;
         }
     }
-
     return helper
 }
 
