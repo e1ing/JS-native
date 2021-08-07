@@ -7,7 +7,7 @@ console.log('lesson 4');
 setTimeout(() => console.log(1), 0);
 console.log(2);
 (() => console.log(3))();
-Promise.resolve(console.log(4)); //если нет .then микротаска не создаётся, он синхронный
+Promise.resolve(console.log(4)); //если нет .then микротаска не создаётся, он синхронный. Сначала отрабатывает функция console.log, потом 4 передаётся в promise.
 //2341
 
 //Task 2 до асинх. запроса
@@ -21,6 +21,7 @@ Promise.resolve(setTimeout(() => console.log(3), 0)); //зарезолвленн
 console.log(4);
 Promise.reject(console.log(5));
 //14523
+
 
 //Task 3a
 (function () {
@@ -79,6 +80,7 @@ setTimeout(() => {
     });
     p.then(() => f())
 }, 0);
+
 /*let l = new Promise((res, rej) => {
     console.log(5);
     rej();
@@ -87,7 +89,7 @@ console.log(7);
 //1576342
 
 //Task 7
-/* исходник, нада, чтобы ввыводило 321 (сейчас выводит 123) - промисификация
+/* исходник, надо, чтобы ввыводило 321 (сейчас выводит 123) - промисификация
 async function sleep(ms: number) {
            setTimeout(() => {
             console.log(ms);
@@ -117,6 +119,14 @@ async function show() {
     await sleep(1)
 }
 show();
+let l = new Promise((res, rej) => {
+    console.log(5);
+    rej();
+});
+l.then(res => console.log(res)).catch(() => console.log(6));
+console.log(7);
+//1576342
+
 
 //Task 8
 let pr1 = new Promise((res) => {
@@ -203,6 +213,7 @@ const handlePromise: TestObjType = {
     resolve: null,
     reject: null,
     onSuccess: (paramName: string) => {
+
         console.log(`Promise is resolved with data: ${paramName}`);
     },
     onError: (paramName: string) => {
@@ -210,19 +221,20 @@ const handlePromise: TestObjType = {
     }
 }
 
-export const createPropmise = () => {
+export const createPromise = () => {
     const somePromise: Promise<any> = new Promise((res, rej) => {
         handlePromise.resolve = res;
         handlePromise.reject = rej;
     });
-    handlePromise.promise=somePromise;
+    handlePromise.promise = somePromise;
     handlePromise.promise
-        .then(handlePromise.onSuccess)
-        .catch(handlePromise.onError)
+        .then(res => handlePromise.onSuccess(res)) //работает также как и следующая строка
+        .catch(handlePromise.onError)  //тут тоже callback, который принимает аргумент и что-то делает с ним
     console.log(handlePromise)
 }
 
 export const resolvePromise = () => {
+
     handlePromise.resolve && handlePromise.resolve("1")
 }
 export const rejectPromise = () => {
@@ -258,13 +270,13 @@ const print = (param) => {
 }
 
 
-// Task 7
+// Task 07
 // Создайте три промиса. Первый промис возвращает объект { name: "Anna" } через 2с,
 // второй промис возвращает объект {age: 16} через 3 с, а третий {city: ''} через 4с.
 // Получите результаты работы промисов, объедините свойства объектов
 // и выведите в консоль {name, age, city}
 
-let first =
+
 // just a plug
 export default () => {
 };
