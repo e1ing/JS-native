@@ -91,9 +91,9 @@ function makeCounter3(num: number): any {
 }
 
 
-let counter3 = makeCounter3(4);
+/*let counter3 = makeCounter3(4);
 
-console.log(counter3.increase);
+console.log(counter3.increase);*/
 
 
 // Task 04*
@@ -178,11 +178,11 @@ function sumTo(arg: number) {
     }
 
     console.log(fib(3));
-
+}
 // Task 06
 // написать функцию, которая повторяет функционал метода flat массива на всю глубину.
 
-    function customFlatend(arr: <Array>) {
+   /* function customFlatend(arr: <Array>) {
         let flattend = [];
 
         function flat(arr: <Array>) {
@@ -196,9 +196,8 @@ function sumTo(arg: number) {
     }
 }
 
-console.log(customFlatened([1, 2, [3, 4]]))
+console.log(customFlatened([1, 2, [3, 4]]))*/
 
 
 // just a plug
-export default () => {
-};
+    export default ()=>{};
